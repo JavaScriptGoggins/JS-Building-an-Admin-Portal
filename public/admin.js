@@ -12,7 +12,18 @@ function renderBook(book) {
 
   let saveButton = document.createElement("button");
   saveButton.textContent = "Save";
-
+  saveButton.addEventListener('click',  async ()=> {
+    let results = await fetch (`http://localhost:3001/updateBook`, {
+      method:'PATCH', 
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: book.id, 
+        quantity: quantityInput.value
+      })
+    })
+  })
   li.append(quantityInput, saveButton);
 
   root.append(li);
@@ -21,8 +32,8 @@ function renderBook(book) {
 
 async function getBookList(){
   let listOfBooks = await fetch(`http://localhost:3001/listBooks`)
-  let books = await response.json();
-
+  let books = await listOfBooks.json();
+console.log(books)
   books.forEach(renderBook);
 }
 
